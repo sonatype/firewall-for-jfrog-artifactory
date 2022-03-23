@@ -12,17 +12,13 @@
     limitations under the License.
 
 -->
-# Firewall for JFrog Artifactory OSS candidate
+# Firewall for JFrog Artifactory
 
 "JFrog Artifactory" is a trademark of JFrog Ltd. and is used according to the brand guidelines provided here: https://jfrog.com/brand-guidelines/
 
 The word "Artifactory" is used as a shorthand of "JFrog Artifactory" in the source code.
 
-Prepare FWFA to be released as an OSS component
-
-A plugin for JFrog Artifactory to enable Nexus Firewall. More information available here:
-
-https://docs.sonatype.com/display/INT/Nexus+Firewall+for+Artifactory 
+A plugin for JFrog Artifactory to enable Nexus Firewall. 
 
 ## Contributing Guidelines
 We welcome contributions to our code. See https://docs.sonatype.com/display/INT/Contributing+Guidelines for more information. 
