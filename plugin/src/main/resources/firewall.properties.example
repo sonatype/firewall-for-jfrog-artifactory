@@ -1,0 +1,34 @@
+# These properties are to configure the connection to the IQ server.
+# The values below are example values and should be updated with your own.
+firewall.iq.url=http://iq.example.com:8070
+firewall.iq.username=exampleusername
+firewall.iq.password=examplepassword
+
+# This identifies this JFrog Artifactory instance with the IQ 'Repositories' view
+firewall.repository.manager.id=artifactory-instance-1
+
+# The URL that users will use to connect to the IQ Server.
+# This URL will be preprended to the Application Composition report URI.
+# For example, a complete Application Composition report URL:
+#   http://iq.public.com:8070/ui/links/repository/0396e6d401d143399d53493e57c106e8/result
+firewall.iq.public.url=http://iq.public.com:8070
+
+# When using JFrog Artifactory in a highly available cluster we recommend to use property storage as cache
+# firewall.cache.quarantine.strategy=STORAGE_ONLY
+
+# Define repositories with a 'firewall.repo.' prefix. Possible options are 'quarantine', 'audit',
+# and 'disabled'.
+#
+# If quarantine is enabled and later disabled, all quarantined components will be made available
+# in the repository; those components cannot be re-quarantined.
+# firewall.repo.<example-repository-name>=quarantine
+# firewall.repo.<other-example-repository-name>=audit
+# firewall.repo.<another-example-repository-name>=disabled
+
+# Define http proxy settings if applicable
+# firewall.iq.proxy.hostname=
+# firewall.iq.proxy.port=
+# firewall.iq.proxy.username=
+# firewall.iq.proxy.password=
+# firewall.iq.proxy.ntlm.domain=
+# firewall.iq.proxy.ntlm.workstation=
