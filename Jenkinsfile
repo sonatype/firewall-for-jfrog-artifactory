@@ -47,7 +47,7 @@ make(
       }]})
     },
     iqPolicyEvaluation: { stage ->
-      nexusPolicyEvaluation iqApplication: 'firewall-for-artifactory',
+      nexusPolicyEvaluation iqApplication: 'firewall-for-jfrog-artifactory',
           iqScanPatterns: [[scanPattern: 'scan_nothing']],
           iqModuleExcludes: [[moduleExclude: '**/assembly/target/**']],
           iqStage: stage,
