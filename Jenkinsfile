@@ -14,9 +14,9 @@
 @Library(['private-pipeline-library', 'jenkins-shared', 'iq-pipeline-library']) _
 
 make(
+    deployBranch: 'main',
     javaVersion: 'OpenJDK 8',
     mavenVersion: 'Maven 3.6.x',
-    deployBranch: 'main',
     usePMD: false,
     useCheckstyle: false,
     releaseRetentionPolicy: RetentionPolicy.TEN_BUILDS,
@@ -48,10 +48,9 @@ make(
       }]})
     },
     iqPolicyEvaluation: { stage ->
-      nexusPolicyEvaluation iqApplication: 'firewall-for-jfrog-artifactory',
+      nexusPolicyEvaluation iqStage: stage, iqApplication: 'firewall-for-jfrog-artifactory',
           iqScanPatterns: [[scanPattern: 'scan_nothing']],
           iqModuleExcludes: [[moduleExclude: '**/assembly/target/**']],
-          iqStage: stage,
           failBuildOnNetworkError: true
     },
     additionalArtifacts: '**/module.xml,**/target/*-reports/**/*',
