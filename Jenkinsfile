@@ -20,7 +20,6 @@ make(
     usePMD: false,
     useCheckstyle: false,
     releaseRetentionPolicy: RetentionPolicy.TEN_BUILDS,
-    deployCondition: { return false },
     downstreamJobName: 'integration-tests',
     artifactsForDownstream: '.zion/repository/com/sonatype/iq/artifactory/**',
     runFeatureBranchPolicyEvaluations: true,
