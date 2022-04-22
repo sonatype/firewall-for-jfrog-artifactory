@@ -16,6 +16,7 @@
 make(
     javaVersion: 'OpenJDK 8',
     mavenVersion: 'Maven 3.6.x',
+    deployBranch: 'main',
     usePMD: false,
     useCheckstyle: false,
     releaseRetentionPolicy: RetentionPolicy.TEN_BUILDS,
