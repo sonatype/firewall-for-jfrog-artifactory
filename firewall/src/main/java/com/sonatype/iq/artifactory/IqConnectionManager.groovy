@@ -390,7 +390,7 @@ class IqConnectionManager
     HttpClientBuilder httpClientBuilder = HttpClientBuilder.create()
         .addInterceptorFirst(new PreemptiveAuthHttpRequestInterceptor())
         .setDefaultCredentialsProvider(credentialsProvider)
-        .setUserAgent(getDefaultUserAgent('Nexus_Firewall_for_Artifactory', "$pluginVersion ($artifactoryVersion)"))
+        .setUserAgent(getDefaultUserAgent('Artifactory', "$artifactoryVersion"))
         .setDefaultRequestConfig(requestConfig)
         // INT-1611 Manually set a cookie header to overcome issue in Artifactory bundled httpclient 4.5.1
         // Can be removed if we observe Artifactory bumping the httpclient version
