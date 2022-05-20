@@ -91,6 +91,22 @@ executions {
       message = e.message
     }
   }
+
+  /**
+   *  Returns the Artifactory edition
+   *
+   *  curl -u admin "http://ARTIFACTORY_SERVER/artifactory/api/system/ping"
+   */
+  artifactoryEdition(httpMethod: 'GET', groups: ['readers']) { Map<String, List<String>> params ->
+    try {
+      asSystem {
+        nexusFirewallForArtifactory.getArtifactoryEdition()
+      }
+    }
+    catch (e) {
+      message = e.message
+    }
+  }
 }
 
 download {
@@ -168,6 +184,8 @@ private void initPlugin(Repositories repositories) {
 
   lastPropertiesFileTimestamp = getPropertiesFileTimestamp()
   log.info("Initialized the FirewallForArtifactory plugin in ${System.currentTimeMillis() - start} ms.")
+
+  nexus
 }
 
 private void reloadConfigIfNeeded() {

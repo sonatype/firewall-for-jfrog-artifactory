@@ -48,7 +48,7 @@ class DefaultNexusFirewallForArtifactoryTest
   FirewallRepository firewallRepository = Mock()
 
   IqConnectionManager iqConnectionManager =
-      Mock(constructorArgs: [firewallProperties, firewallRepositories, logger, 'it-test', '6.6.5'])
+      Mock(constructorArgs: [firewallProperties, firewallRepositories, logger, 'it-test', '6.6.5', 'Pro'])
 
   StorageManager storageManager = Mock(StorageManager, constructorArgs: [Mock(Repositories), Mock(PathFactory),
                                                                          firewallRepositories, logger])

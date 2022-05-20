@@ -136,7 +136,7 @@ class NexusFirewallForArtifactoryTestContainer
     // setup the IQ connection manager to return responses based on the contract
     boolean quarantinedByIq = contract['artifact']['quarantinedByIq']
     IqConnectionManager iqConnectionManager =
-        Mock(constructorArgs: [firewallProperties, firewallRepositories, logger, 'test', '6.6.5'])
+        Mock(constructorArgs: [firewallProperties, firewallRepositories, logger, 'test', '6.6.5', 'Pro'])
     iqConnectionManager.firewallIgnorePatterns >> firewallIgnorePatterns
     iqConnectionManager.tryInitializeConnection() >> true
 

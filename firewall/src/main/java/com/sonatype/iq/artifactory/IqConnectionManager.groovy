@@ -12,6 +12,9 @@
  */
 package com.sonatype.iq.artifactory
 
+import com.sonatype.iq.artifactory.httpclient.UserAgentUtils
+import org.artifactory.repo.Repositories
+
 import java.nio.charset.StandardCharsets
 import java.time.Instant
 
@@ -46,7 +49,6 @@ import org.slf4j.Logger
 import static com.sonatype.clm.dto.model.component.RepositoryComponentEvaluationDataRequestList.INITIAL_AUDIT
 import static com.sonatype.clm.dto.model.component.RepositoryComponentEvaluationDataRequestList.NEW_COMPONENT
 import static com.sonatype.clm.dto.model.component.RepositoryComponentEvaluationDataRequestList.REEVALUATION
-import static com.sonatype.insight.client.utils.UserAgentUtils.getDefaultUserAgent
 import static com.sonatype.iq.artifactory.restclient.RepositoryManagerType.ARTIFACTORY
 import static java.lang.System.currentTimeMillis
 import static java.time.temporal.ChronoUnit.MILLIS
@@ -80,7 +82,8 @@ class IqConnectionManager
 
   @VisibleForTesting
   IqConnectionManager(final FirewallProperties firewallProperties, final FirewallRepositories firewallRepositories,
-                      final Logger log, final String pluginVersion, final String artifactoryVersion)
+                      final Logger log, final String pluginVersion, final String artifactoryVersion,
+                      final String artifactoryEdition)
   {
     def iqServerUrl = requireNonNull(firewallProperties.iqUrl,
         "firewall.iq.url is required in firewall.properties")
@@ -102,7 +105,8 @@ class IqConnectionManager
     this.restClientConfiguration = new RestClientConfiguration()
     this.restClientConfiguration.setServerUrl(iqServerUrl)
     this.restClientConfiguration.setHttpClientProvider(getHttpClientProvider(iqServerUrl, iqServerUsername,
-        iqServerPassword, connectTimeout, socketTimeout, pluginVersion, artifactoryVersion, firewallProperties))
+        iqServerPassword, connectTimeout, socketTimeout, pluginVersion, artifactoryVersion, artifactoryEdition,
+            firewallProperties))
     this.firewallRepositories = firewallRepositories
   }
 
@@ -367,6 +371,7 @@ class IqConnectionManager
                                                     final Integer socketTimeoutInMillis,
                                                     final String pluginVersion,
                                                     final String artifactoryVersion,
+                                                    final String artifactoryEdition,
                                                     final String proxyHost,
                                                     final Integer proxyPort,
                                                     final String proxyUsername,
@@ -390,7 +395,7 @@ class IqConnectionManager
     HttpClientBuilder httpClientBuilder = HttpClientBuilder.create()
         .addInterceptorFirst(new PreemptiveAuthHttpRequestInterceptor())
         .setDefaultCredentialsProvider(credentialsProvider)
-        .setUserAgent(getDefaultUserAgent('Artifactory', "$artifactoryVersion"))
+        .setUserAgent(UserAgentUtils.getDefaultUserAgent("$pluginVersion ($artifactoryVersion)", artifactoryEdition))
         .setDefaultRequestConfig(requestConfig)
         // INT-1611 Manually set a cookie header to overcome issue in Artifactory bundled httpclient 4.5.1
         // Can be removed if we observe Artifactory bumping the httpclient version
@@ -426,7 +431,7 @@ class IqConnectionManager
 
   private HttpClientProvider getHttpClientProvider(String iqServerUrl, String iqServerUsername, String iqServerPassword,
                                                    int connectTimeout, int socketTimeout, String pluginVersion,
-                                                   String artifactoryVersion, FirewallProperties firewallProperties)
+                                                   String artifactoryVersion, String artifactoryEdition, FirewallProperties firewallProperties)
   {
     return new HttpClientProvider() {
       @Override

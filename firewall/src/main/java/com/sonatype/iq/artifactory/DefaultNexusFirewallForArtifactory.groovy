@@ -93,7 +93,7 @@ class DefaultNexusFirewallForArtifactory
     this.log = log
     this.firewallRepositories = new FirewallRepositories()
     this.iqConnectionManager = new IqConnectionManager(firewallProperties, firewallRepositories, log,
-        getPluginVersion(), artifactoryVersion)
+        getPluginVersion(), artifactoryVersion, getArtifactoryEdition())
     this.storageManager = new StorageManager(repositories, pathFactory, firewallRepositories, log)
     this.ignorePatternMatcher = IgnorePatternMatcher.instance
     this.ignorePatternReloadCronExpression = firewallProperties.ignorePatternReloadCronExpression ?:
@@ -168,6 +168,20 @@ class DefaultNexusFirewallForArtifactory
     catch (Exception e) {
       log.error("Firewall plugin failed to initialize", e)
     }
+  }
+
+  @Override
+  String getArtifactoryEdition() {
+    def baseUrl = new URL('http://localhost:8082/artifactory/api/system/ping')
+    HttpURLConnection connection = (HttpURLConnection) baseUrl.openConnection();
+    connection.with {
+      doOutput = true
+      requestMethod = 'GET'
+      log.info("-------------------------- GET ARTIFACTORY EDITION --------------------")
+      log.info(content)
+      log.info(content.text)
+    }
+    return "Unknown"
   }
 
   private CronExecutorService createIgnorePatternScheduler(final Logger log) {

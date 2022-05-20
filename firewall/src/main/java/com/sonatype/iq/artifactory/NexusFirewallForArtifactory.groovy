@@ -25,6 +25,8 @@ trait NexusFirewallForArtifactory
     return this.getClass().getPackage()?.getImplementationVersion() ?: 'unknown'
   }
 
+  abstract String getArtifactoryEdition()
+
   abstract void loadIgnorePatterns()
 
   abstract RepositoryPolicyEvaluationSummary getFirewallEvaluationSummary(String repositoryName)
