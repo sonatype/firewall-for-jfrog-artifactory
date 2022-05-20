@@ -170,20 +170,6 @@ class DefaultNexusFirewallForArtifactory
     }
   }
 
-  @Override
-  String getArtifactoryEdition() {
-    def baseUrl = new URL('http://localhost:8082/artifactory/api/system/ping')
-    HttpURLConnection connection = (HttpURLConnection) baseUrl.openConnection();
-    connection.with {
-      doOutput = true
-      requestMethod = 'GET'
-      log.info("-------------------------- GET ARTIFACTORY EDITION --------------------")
-      log.info(content)
-      log.info(content.text)
-    }
-    return "Unknown"
-  }
-
   private CronExecutorService createIgnorePatternScheduler(final Logger log) {
     def scheduler = new CronExecutorService(0)
     scheduler.scheduleWithCronExpression({ -> loadIgnorePatterns() }, getIgnorePatternReloadCronExpression(),

@@ -51,11 +51,6 @@ class SafeModeNexusFirewallForArtifactory
   }
 
   @Override
-  String getArtifactoryEdition() {
-    // no-op
-  }
-
-  @Override
   void loadIgnorePatterns() {
     // no-op
   }

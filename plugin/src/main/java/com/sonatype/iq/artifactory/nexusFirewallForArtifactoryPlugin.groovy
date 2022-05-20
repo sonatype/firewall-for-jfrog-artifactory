@@ -92,20 +92,10 @@ executions {
     }
   }
 
-  /**
-   *  Returns the Artifactory edition
-   *
-   *  curl -u admin "http://ARTIFACTORY_SERVER/artifactory/api/system/ping"
-   */
-  artifactoryEdition(httpMethod: 'GET', groups: ['readers']) { Map<String, List<String>> params ->
-    try {
-      asSystem {
-        nexusFirewallForArtifactory.getArtifactoryEdition()
-      }
-    }
-    catch (e) {
-      message = e.message
-    }
+  dummyPlugin(users: ['anonymous']) {
+    log.info("----------------------- Dummy Plugin ----------------------")
+    message = '{"status":"okay"}'
+    status = 200
   }
 }
 

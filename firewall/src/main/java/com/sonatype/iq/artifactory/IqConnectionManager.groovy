@@ -395,7 +395,7 @@ class IqConnectionManager
     HttpClientBuilder httpClientBuilder = HttpClientBuilder.create()
         .addInterceptorFirst(new PreemptiveAuthHttpRequestInterceptor())
         .setDefaultCredentialsProvider(credentialsProvider)
-        .setUserAgent(UserAgentUtils.getDefaultUserAgent("$pluginVersion ($artifactoryVersion)", artifactoryEdition))
+        .setUserAgent(UserAgentUtils.getDefaultUserAgent("$pluginVersion ($artifactoryVersion)", "Pro"))
         .setDefaultRequestConfig(requestConfig)
         // INT-1611 Manually set a cookie header to overcome issue in Artifactory bundled httpclient 4.5.1
         // Can be removed if we observe Artifactory bumping the httpclient version
@@ -431,7 +431,7 @@ class IqConnectionManager
 
   private HttpClientProvider getHttpClientProvider(String iqServerUrl, String iqServerUsername, String iqServerPassword,
                                                    int connectTimeout, int socketTimeout, String pluginVersion,
-                                                   String artifactoryVersion, String artifactoryEdition, FirewallProperties firewallProperties)
+                                                   String artifactoryVersion, FirewallProperties firewallProperties)
   {
     return new HttpClientProvider() {
       @Override
