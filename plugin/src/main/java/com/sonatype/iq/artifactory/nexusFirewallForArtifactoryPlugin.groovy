@@ -12,6 +12,8 @@
  */
 package com.sonatype.iq.artifactory
 
+import jdk.jfr.internal.Repository
+
 import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantReadWriteLock
 
@@ -24,6 +26,9 @@ import org.artifactory.exception.CancelException
 import org.artifactory.fs.ItemInfo
 import org.artifactory.repo.RepoPath
 import org.artifactory.repo.Repositories
+import org.artifactory.repo.RepositoryConfiguration;
+import org.artifactory.addon.plugin.PluginInfo;
+import org.artifactory.repo.RepoPathFactory;
 import org.artifactory.request.Request
 
 import static java.lang.String.format
@@ -85,17 +90,15 @@ executions {
    **/
   firewallVersion(httpMethod: 'GET', groups: ['readers']) { Map<String, List<String>> params ->
     try {
+      log.info("--------------------------------- FIREWALL VERSION --------------------------")
+      println("--------------------------------- FIREWALL VERSION --------------------------")
       message = JsonOutput.toJson([version: nexusFirewallForArtifactory.getPluginVersion()])
+      log.info("--------------------------------- FIREWALL VERSION --------------------------")
+      println("--------------------------------- FIREWALL VERSION --------------------------")
     }
     catch (e) {
       message = e.message
     }
-  }
-
-  dummyPlugin(users: ['anonymous']) {
-    log.info("----------------------- Dummy Plugin ----------------------")
-    message = '{"status":"okay"}'
-    status = 200
   }
 }
 
@@ -154,7 +157,22 @@ private runHandlerWithInitialisation(Map params) {
   }
 }
 
+private void printContext() {
+  println("----------------------------- CONTEXT --------------------------------------")
+  println(ctx.getProperties().toString())
+  println(ctx.versionProvider.toString())
+  println(ctx.versionProvider?.running.toString())
+  println(ctx.environment.toString())
+  println(ctx.environment?.propertySources.toString())
+  println(ctx.environment?.propertySources?.systemProperties)
+  println(ctx.environment?.propertySources?.systemProperties?.getProperties())
+  println(ctx.environment?.propertySources?.systemEnvironment)
+  println(ctx.environment?.propertySources?.systemEnvironment?.getProperties())
+}
+
 private void initPlugin(Repositories repositories) {
+  printContext()
+
   long start = System.currentTimeMillis()
   log.info('Initializing the FirewallForArtifactory plugin.')
   try {
@@ -174,8 +192,6 @@ private void initPlugin(Repositories repositories) {
 
   lastPropertiesFileTimestamp = getPropertiesFileTimestamp()
   log.info("Initialized the FirewallForArtifactory plugin in ${System.currentTimeMillis() - start} ms.")
-
-  nexus
 }
 
 private void reloadConfigIfNeeded() {

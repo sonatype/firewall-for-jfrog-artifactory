@@ -93,7 +93,7 @@ class DefaultNexusFirewallForArtifactory
     this.log = log
     this.firewallRepositories = new FirewallRepositories()
     this.iqConnectionManager = new IqConnectionManager(firewallProperties, firewallRepositories, log,
-        getPluginVersion(), artifactoryVersion, getArtifactoryEdition())
+        getPluginVersion(), artifactoryVersion)
     this.storageManager = new StorageManager(repositories, pathFactory, firewallRepositories, log)
     this.ignorePatternMatcher = IgnorePatternMatcher.instance
     this.ignorePatternReloadCronExpression = firewallProperties.ignorePatternReloadCronExpression ?:

@@ -13,7 +13,6 @@
 package com.sonatype.iq.artifactory
 
 import com.sonatype.iq.artifactory.httpclient.UserAgentUtils
-import org.artifactory.repo.Repositories
 
 import java.nio.charset.StandardCharsets
 import java.time.Instant
@@ -82,8 +81,7 @@ class IqConnectionManager
 
   @VisibleForTesting
   IqConnectionManager(final FirewallProperties firewallProperties, final FirewallRepositories firewallRepositories,
-                      final Logger log, final String pluginVersion, final String artifactoryVersion,
-                      final String artifactoryEdition)
+                      final Logger log, final String pluginVersion, final String artifactoryVersion)
   {
     def iqServerUrl = requireNonNull(firewallProperties.iqUrl,
         "firewall.iq.url is required in firewall.properties")
@@ -105,8 +103,7 @@ class IqConnectionManager
     this.restClientConfiguration = new RestClientConfiguration()
     this.restClientConfiguration.setServerUrl(iqServerUrl)
     this.restClientConfiguration.setHttpClientProvider(getHttpClientProvider(iqServerUrl, iqServerUsername,
-        iqServerPassword, connectTimeout, socketTimeout, pluginVersion, artifactoryVersion, artifactoryEdition,
-            firewallProperties))
+        iqServerPassword, connectTimeout, socketTimeout, pluginVersion, artifactoryVersion, firewallProperties))
     this.firewallRepositories = firewallRepositories
   }
 
@@ -371,7 +368,6 @@ class IqConnectionManager
                                                     final Integer socketTimeoutInMillis,
                                                     final String pluginVersion,
                                                     final String artifactoryVersion,
-                                                    final String artifactoryEdition,
                                                     final String proxyHost,
                                                     final Integer proxyPort,
                                                     final String proxyUsername,
