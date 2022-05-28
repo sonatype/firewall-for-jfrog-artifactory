@@ -90,11 +90,7 @@ executions {
    **/
   firewallVersion(httpMethod: 'GET', groups: ['readers']) { Map<String, List<String>> params ->
     try {
-      log.info("--------------------------------- FIREWALL VERSION --------------------------")
-      println("--------------------------------- FIREWALL VERSION --------------------------")
       message = JsonOutput.toJson([version: nexusFirewallForArtifactory.getPluginVersion()])
-      log.info("--------------------------------- FIREWALL VERSION --------------------------")
-      println("--------------------------------- FIREWALL VERSION --------------------------")
     }
     catch (e) {
       message = e.message
@@ -155,19 +151,6 @@ private runHandlerWithInitialisation(Map params) {
   else {
     params.onRunOnceBeforeAllHandlersFailure()
   }
-}
-
-private void printContext() {
-  println("----------------------------- CONTEXT --------------------------------------")
-  println(ctx.getProperties().toString())
-  println(ctx.versionProvider.toString())
-  println(ctx.versionProvider?.running.toString())
-  println(ctx.environment.toString())
-  println(ctx.environment?.propertySources.toString())
-  println(ctx.environment?.propertySources?.systemProperties)
-  println(ctx.environment?.propertySources?.systemProperties?.getProperties())
-  println(ctx.environment?.propertySources?.systemEnvironment)
-  println(ctx.environment?.propertySources?.systemEnvironment?.getProperties())
 }
 
 private void initPlugin(Repositories repositories) {

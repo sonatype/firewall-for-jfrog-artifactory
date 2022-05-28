@@ -12,7 +12,6 @@
  */
 package com.sonatype.iq.artifactory
 
-import com.sonatype.iq.artifactory.httpclient.UserAgentUtils
 
 import java.nio.charset.StandardCharsets
 import java.time.Instant
