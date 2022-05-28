@@ -12,8 +12,6 @@
  */
 package com.sonatype.iq.artifactory
 
-import jdk.jfr.internal.Repository
-
 import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantReadWriteLock
 
@@ -26,9 +24,6 @@ import org.artifactory.exception.CancelException
 import org.artifactory.fs.ItemInfo
 import org.artifactory.repo.RepoPath
 import org.artifactory.repo.Repositories
-import org.artifactory.repo.RepositoryConfiguration;
-import org.artifactory.addon.plugin.PluginInfo;
-import org.artifactory.repo.RepoPathFactory;
 import org.artifactory.request.Request
 
 import static java.lang.String.format
@@ -154,7 +149,6 @@ private runHandlerWithInitialisation(Map params) {
 }
 
 private void initPlugin(Repositories repositories) {
-  printContext()
 
   long start = System.currentTimeMillis()
   log.info('Initializing the FirewallForArtifactory plugin.')
