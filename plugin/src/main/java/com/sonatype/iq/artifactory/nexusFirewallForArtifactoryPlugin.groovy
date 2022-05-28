@@ -149,7 +149,6 @@ private runHandlerWithInitialisation(Map params) {
 }
 
 private void initPlugin(Repositories repositories) {
-
   long start = System.currentTimeMillis()
   log.info('Initializing the FirewallForArtifactory plugin.')
   try {
