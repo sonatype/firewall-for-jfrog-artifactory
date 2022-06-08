@@ -50,7 +50,7 @@
     <xstream.version>1.4.10</xstream.version>
     <insight.version>1.130.0-01</insight.version>
     <insight.scanner.version>2.33.0-01</insight.scanner.version>
-    <hds.version>2.48.0</hds.version>
+    <hds.version>2.50.4</hds.version>
     <jersey.version>2.34</jersey.version>
     <!-- Groovy 2.4 supported by Artifactory User Plugins -->
     <groovy.version>2.4.21</groovy.version>
