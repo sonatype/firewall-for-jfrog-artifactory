@@ -386,7 +386,7 @@ class IqConnectionManager
         .setSocketTimeout(socketTimeoutInMillis)
         .build()
 
-    def userAgent = UserAgentUtils.getDefaultUserAgent("$pluginVersion", "", "Jfrog Artifactory $artifactoryVersion")
+    def userAgent = UserAgentUtils.getDefaultUserAgent(pluginVersion, "", "Jfrog Artifactory $artifactoryVersion")
 
     HttpClientBuilder httpClientBuilder = HttpClientBuilder.create()
         .addInterceptorFirst(new PreemptiveAuthHttpRequestInterceptor())
@@ -439,4 +439,12 @@ class IqConnectionManager
       }
     }
   }
+
+  @VisibleForTesting
+  String getUserAgent(String pluginVersion, String repositoryManagerEdition, String repositoryManagerNameAndVersion) {
+    return String.format("Firewall_For_Jfrog_Artifactory/%s (%s; %s; %s; %s; %s; %s)", pluginVersion,
+        repositoryManagerEdition, System.getProperty("os.name"), System.getProperty("os.version"),
+        System.getProperty("os.arch"), System.getProperty("java.version"), repositoryManagerNameAndVersion);
+  }
+
 }
