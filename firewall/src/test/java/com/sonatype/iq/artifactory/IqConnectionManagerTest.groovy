@@ -18,33 +18,32 @@ import groovy.util.logging.Slf4j
 import spock.lang.Specification
 
 @Slf4j(value = 'logger')
-class IqConnectionManagerTest
-    extends Specification
+class IqConnectionManagerTest extends Specification
 {
 
-  RestClientFactory restClientFactory = Mock()
+    RestClientFactory restClientFactory = Mock()
 
     RestClientConfiguration restClientConfiguration = Mock()
 
     FirewallRepositories firewallRepositories = Mock(FirewallRepositories)
 
     def 'test get user agent'() {
-        given:
-            def iqConnectionManager = new IqConnectionManager(restClientFactory, restClientConfiguration, firewallRepositories, logger)
-            def expectedUserAgent = String.format("Firewall_For_Jfrog_Artifactory/%s (%s; %s; %s; %s; %s; %s)",
-                    pluginVersion, repositoryManagerEdition, System.getProperty("os.name"),
-                    System.getProperty("os.version"), System.getProperty("os.arch"), System.getProperty("java.version"),
-                    repositoryManagerNameAndVersion)
+      given:
+        def iqConnectionManager = new IqConnectionManager(restClientFactory, restClientConfiguration, firewallRepositories, logger)
+        def expectedUserAgent = String.format("Firewall_For_Jfrog_Artifactory/%s (%s; %s; %s; %s; %s; %s)",
+          pluginVersion, repositoryManagerEdition, System.getProperty("os.name"),
+          System.getProperty("os.version"), System.getProperty("os.arch"), System.getProperty("java.version"),
+          repositoryManagerNameAndVersion)
 
         when:
-                def userAgent = iqConnectionManager.getUserAgent(pluginVersion, repositoryManagerEdition, repositoryManagerNameAndVersion)
+          def userAgent = iqConnectionManager.getUserAgent(pluginVersion, repositoryManagerEdition, repositoryManagerNameAndVersion)
 
         then:
-            userAgent == expectedUserAgent
+          userAgent == expectedUserAgent
 
         where:
-            pluginVersion  | repositoryManagerEdition | repositoryManagerNameAndVersion
-            "2.3-SNAPSHOT" | "PRO"                    |  "Jfrog Artifactory 7.37.15"
-            "2.3-SNAPSHOT" |  ""                      |  "Jfrog Artifactory 7.37.15"
+          pluginVersion  | repositoryManagerEdition | repositoryManagerNameAndVersion
+          "2.3-SNAPSHOT" | "PRO"                    | "Jfrog Artifactory 7.37.15"
+          "2.3-SNAPSHOT" | ""                       | "Jfrog Artifactory 7.37.15"
     }
 }
