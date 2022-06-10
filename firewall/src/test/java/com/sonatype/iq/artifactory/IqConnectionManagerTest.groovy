@@ -20,7 +20,6 @@ import spock.lang.Specification
 @Slf4j(value = 'logger')
 class IqConnectionManagerTest extends Specification
 {
-
     RestClientFactory restClientFactory = Mock()
 
     RestClientConfiguration restClientConfiguration = Mock()
