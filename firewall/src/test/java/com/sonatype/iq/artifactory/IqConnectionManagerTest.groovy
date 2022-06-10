@@ -16,6 +16,7 @@ import com.sonatype.iq.artifactory.restclient.RestClientConfiguration
 import com.sonatype.iq.artifactory.restclient.RestClientFactory
 import groovy.util.logging.Slf4j
 import spock.lang.Specification
+import spock.lang.Unroll
 
 @Slf4j(value = 'logger')
 class IqConnectionManagerTest extends Specification
@@ -26,6 +27,7 @@ class IqConnectionManagerTest extends Specification
 
     FirewallRepositories firewallRepositories = Mock(FirewallRepositories)
 
+    @Unroll
     def 'test get user agent'() {
       given:
         def iqConnectionManager = new IqConnectionManager(restClientFactory, restClientConfiguration, firewallRepositories, logger)
