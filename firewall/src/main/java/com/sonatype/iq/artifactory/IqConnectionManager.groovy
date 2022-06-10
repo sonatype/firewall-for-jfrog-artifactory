@@ -446,5 +446,4 @@ class IqConnectionManager
         repositoryManagerEdition, System.getProperty("os.name"), System.getProperty("os.version"),
         System.getProperty("os.arch"), System.getProperty("java.version"), repositoryManagerNameAndVersion);
   }
-
 }
