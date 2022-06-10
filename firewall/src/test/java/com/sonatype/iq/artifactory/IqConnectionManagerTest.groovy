@@ -44,7 +44,6 @@ class IqConnectionManagerTest extends Specification
 
         where:
           pluginVersion  | repositoryManagerEdition | repositoryManagerNameAndVersion
-          "2.3-SNAPSHOT" | "PRO"                    | "Jfrog Artifactory 7.37.15"
           "2.3-SNAPSHOT" | ""                       | "Jfrog Artifactory 7.37.15"
     }
 }
