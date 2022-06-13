@@ -386,7 +386,7 @@ class IqConnectionManager
         .setSocketTimeout(socketTimeoutInMillis)
         .build()
 
-    def userAgent = UserAgentUtils.getDefaultUserAgent(pluginVersion, "", "Jfrog Artifactory $artifactoryVersion")
+    def userAgent = getUserAgent(pluginVersion, "", "Jfrog Artifactory $artifactoryVersion")
 
     HttpClientBuilder httpClientBuilder = HttpClientBuilder.create()
         .addInterceptorFirst(new PreemptiveAuthHttpRequestInterceptor())
