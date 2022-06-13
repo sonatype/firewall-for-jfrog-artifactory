@@ -27,9 +27,11 @@ class IqConnectionManagerTest extends Specification
 
   FirewallRepositories firewallRepositories = Mock(FirewallRepositories)
 
-  @Unroll
   def 'test get user agent'() {
     given:
+      def pluginVersion = "2.3-SNAPSHOT"
+      def repositoryManagerEdition = ""
+      def repositoryManagerNameAndVersion = "Jfrog Artifactory 7.37.15"
       def iqConnectionManager = new IqConnectionManager(restClientFactory, restClientConfiguration, firewallRepositories, logger)
       def expectedUserAgent = String.format("Firewall_For_Jfrog_Artifactory/%s (%s; %s; %s; %s; %s; %s)",
         pluginVersion, repositoryManagerEdition, System.getProperty("os.name"),
@@ -41,9 +43,5 @@ class IqConnectionManagerTest extends Specification
 
       then:
         userAgent == expectedUserAgent
-
-      where:
-        pluginVersion  | repositoryManagerEdition | repositoryManagerNameAndVersion
-        "2.3-SNAPSHOT" | ""                       | "Jfrog Artifactory 7.37.15"
     }
 }
