@@ -46,7 +46,6 @@ import org.slf4j.Logger
 import static com.sonatype.clm.dto.model.component.RepositoryComponentEvaluationDataRequestList.INITIAL_AUDIT
 import static com.sonatype.clm.dto.model.component.RepositoryComponentEvaluationDataRequestList.NEW_COMPONENT
 import static com.sonatype.clm.dto.model.component.RepositoryComponentEvaluationDataRequestList.REEVALUATION
-import static com.sonatype.insight.client.utils.UserAgentUtils.getDefaultUserAgent
 import static com.sonatype.iq.artifactory.restclient.RepositoryManagerType.ARTIFACTORY
 import static java.lang.System.currentTimeMillis
 import static java.time.temporal.ChronoUnit.MILLIS
@@ -387,10 +386,12 @@ class IqConnectionManager
         .setSocketTimeout(socketTimeoutInMillis)
         .build()
 
+    String userAgent = getUserAgent(pluginVersion, "", "Jfrog Artifactory $artifactoryVersion")
+
     HttpClientBuilder httpClientBuilder = HttpClientBuilder.create()
         .addInterceptorFirst(new PreemptiveAuthHttpRequestInterceptor())
         .setDefaultCredentialsProvider(credentialsProvider)
-        .setUserAgent(getDefaultUserAgent('Nexus_Firewall_for_Artifactory', "$pluginVersion ($artifactoryVersion)"))
+        .setUserAgent(userAgent)
         .setDefaultRequestConfig(requestConfig)
         // INT-1611 Manually set a cookie header to overcome issue in Artifactory bundled httpclient 4.5.1
         // Can be removed if we observe Artifactory bumping the httpclient version
@@ -437,5 +438,12 @@ class IqConnectionManager
             firewallProperties.proxyNtlmDomain, firewallProperties.proxyNtlmWorkstation)
       }
     }
+  }
+
+  @VisibleForTesting
+  String getUserAgent(String pluginVersion, String repositoryManagerEdition, String repositoryManagerNameAndVersion) {
+    return String.format("Firewall_For_Jfrog_Artifactory/%s (%s; %s; %s; %s; %s; %s)", pluginVersion,
+        repositoryManagerEdition, System.getProperty("os.name"), System.getProperty("os.version"),
+        System.getProperty("os.arch"), System.getProperty("java.version"), repositoryManagerNameAndVersion);
   }
 }
