@@ -59,7 +59,8 @@ class TelemetrySupplier
   }
 
   /**
-   * Check if IQ Server version is >= 141 to avoid generating invalid telemetry data (see*/
+   * Check if IQ Server version is >= 141 to avoid generating invalid telemetry data (see CLM-21411)
+   */
   private boolean telemetryServerVersionCheck() {
     try {
       restClientFactory.forConfiguration(restClientConfiguration).validateServerVersion(
