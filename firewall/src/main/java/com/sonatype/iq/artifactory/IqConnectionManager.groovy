@@ -77,6 +77,8 @@ class IqConnectionManager
 
   private String repositoryManagerId
 
+  private final TelemetrySupplier telemetrySupplier
+
   @VisibleForTesting
   IqConnectionManager(final FirewallProperties firewallProperties, final FirewallRepositories firewallRepositories,
                       final Logger log, final String pluginVersion, final String artifactoryVersion)
@@ -101,16 +103,20 @@ class IqConnectionManager
     this.restClientConfiguration = new RestClientConfiguration()
     this.restClientConfiguration.setServerUrl(iqServerUrl)
     this.restClientConfiguration.setHttpClientProvider(getHttpClientProvider(iqServerUrl, iqServerUsername,
-        iqServerPassword, connectTimeout, socketTimeout, pluginVersion, artifactoryVersion, firewallProperties))
+        iqServerPassword, connectTimeout, socketTimeout, firewallProperties))
     this.firewallRepositories = firewallRepositories
+    this.telemetrySupplier = new TelemetrySupplier(restClientFactory, restClientConfiguration, artifactoryVersion,
+        pluginVersion, log)
   }
 
   @VisibleForTesting
   IqConnectionManager(final RestClientFactory restClientFactory,
                       final RestClientConfiguration restClientConfiguration,
                       final FirewallRepositories firewallRepositories,
+                      final TelemetrySupplier telemetrySupplier,
                       final Logger log)
   {
+    this.telemetrySupplier = telemetrySupplier
     this.restClientFactory = restClientFactory
     this.restClientConfiguration = restClientConfiguration
     this.firewallRepositories = firewallRepositories
@@ -144,6 +150,8 @@ class IqConnectionManager
           connectionFailed = false
 
           migrationServerVersionCheck()
+
+          telemetrySupplier.enable()
         }
         catch (IOException e) {
           lastFailedConnectionAttempt = Instant.now()
@@ -364,8 +372,6 @@ class IqConnectionManager
                                                     final String iqPassword,
                                                     final Integer connectTimeoutInMillis,
                                                     final Integer socketTimeoutInMillis,
-                                                    final String pluginVersion,
-                                                    final String artifactoryVersion,
                                                     final String proxyHost,
                                                     final Integer proxyPort,
                                                     final String proxyUsername,
@@ -386,7 +392,7 @@ class IqConnectionManager
         .setSocketTimeout(socketTimeoutInMillis)
         .build()
 
-    String userAgent = getUserAgent(pluginVersion, "", "Jfrog Artifactory $artifactoryVersion")
+    String userAgent = telemetrySupplier.getUserAgent()
 
     HttpClientBuilder httpClientBuilder = HttpClientBuilder.create()
         .addInterceptorFirst(new PreemptiveAuthHttpRequestInterceptor())
@@ -425,25 +431,23 @@ class IqConnectionManager
     return httpClientBuilder
   }
 
-  private HttpClientProvider getHttpClientProvider(String iqServerUrl, String iqServerUsername, String iqServerPassword,
-                                                   int connectTimeout, int socketTimeout, String pluginVersion,
-                                                   String artifactoryVersion, FirewallProperties firewallProperties)
+  private HttpClientProvider getHttpClientProvider(
+      String iqServerUrl,
+      String iqServerUsername,
+      String iqServerPassword,
+      int connectTimeout,
+      int socketTimeout,
+      FirewallProperties firewallProperties)
   {
     return new HttpClientProvider() {
       @Override
       HttpClientBuilder createHttpClient(final RestClientConfiguration restClientConfiguration) {
-        return createHttpClientBuilder(iqServerUrl, iqServerUsername, iqServerPassword, connectTimeout,
-            socketTimeout, pluginVersion, artifactoryVersion, firewallProperties.proxyHostname,
-            firewallProperties.proxyPort, firewallProperties.proxyUsername, firewallProperties.proxyPassword,
-            firewallProperties.proxyNtlmDomain, firewallProperties.proxyNtlmWorkstation)
+        return createHttpClientBuilder(iqServerUrl, iqServerUsername, iqServerPassword, connectTimeout, socketTimeout,
+            firewallProperties.proxyHostname, firewallProperties.proxyPort, firewallProperties.proxyUsername,
+            firewallProperties.proxyPassword, firewallProperties.proxyNtlmDomain,
+            firewallProperties.proxyNtlmWorkstation)
       }
     }
   }
 
-  @VisibleForTesting
-  String getUserAgent(String pluginVersion, String repositoryManagerEdition, String repositoryManagerNameAndVersion) {
-    return String.format("Firewall_For_Jfrog_Artifactory/%s (%s; %s; %s; %s; %s; %s)", pluginVersion,
-        repositoryManagerEdition, System.getProperty("os.name"), System.getProperty("os.version"),
-        System.getProperty("os.arch"), System.getProperty("java.version"), repositoryManagerNameAndVersion);
-  }
 }

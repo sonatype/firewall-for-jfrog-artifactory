@@ -41,6 +41,8 @@ class RepositoryManagerTest
 
   RepositoryManager repositoryManager
 
+  TelemetrySupplier telemetrySupplier = Mock()
+
   Map defaultProperties = [
       'firewall.iq.url'              : 'http://localhost:8072',
       'firewall.iq.username'         : 'admin',
@@ -340,7 +342,7 @@ class RepositoryManagerTest
     firewallProperties = FirewallProperties.load(properties, logger)
 
     iqConnectionManager = Mock(IqConnectionManager, constructorArgs: [Mock(RestClientFactory), Mock(
-        RestClientConfiguration), firewallRepositories, logger])
+        RestClientConfiguration), firewallRepositories, telemetrySupplier, logger])
 
     iqConnectionManager.getPolicyEvaluationSummary(_) >> TestHelper.createRepositoryPolicyEvaluationSummary()
 
