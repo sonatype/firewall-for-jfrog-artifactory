@@ -30,7 +30,7 @@ class TelemetrySupplier
 
   private final String pluginVersion
 
-  private Boolean telemetryIsEnabled
+  private boolean telemetryIsEnabled
 
   private final Logger log
 
