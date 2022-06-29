@@ -22,9 +22,9 @@ class TelemetrySupplier
 {
   private static final String REQUIRED_IQ_VERSION_FOR_TELEMETRY = '1.141.0'
 
-  private final RestClientFactory restClientFactory;
+  private final RestClientFactory restClientFactory
 
-  private final RestClientConfiguration restClientConfiguration;
+  private final RestClientConfiguration restClientConfiguration
 
   private final String artifactoryVersion
 
