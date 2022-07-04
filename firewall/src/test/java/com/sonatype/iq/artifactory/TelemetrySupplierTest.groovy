@@ -44,6 +44,8 @@ class TelemetrySupplierTest
       restClientFactory.forConfiguration(restClientConfiguration) >>
           Mock(Base) { validateServerVersion('1.141.0') >>
               { throw new UnsupportedServerVersionException('ignored', 'ignored') } }
+
+    and: 'telemetry enabled'
       telemetrySupplier.enableIfSupported()
 
     when: 'telemetry is generated'
