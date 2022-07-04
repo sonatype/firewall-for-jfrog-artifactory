@@ -31,7 +31,8 @@ class TelemetrySupplierTest
   Logger log = Mock()
 
   @Subject
-  TelemetrySupplier telemetrySupplier = new TelemetrySupplier(restClientFactory, restClientConfiguration, 'arti-1.0', 'fwfa-1.1', log)
+  TelemetrySupplier telemetrySupplier = new TelemetrySupplier(restClientFactory, restClientConfiguration, 'arti-1.0',
+      'fwfa-1.1', log)
 
   def "telemetry disabled when not initialized"() {
     expect:
@@ -40,7 +41,9 @@ class TelemetrySupplierTest
 
   def "telemetry disabled when version does not match"() {
     given: 'version check results in exception being thrown'
-      restClientFactory.forConfiguration(restClientConfiguration) >> { throw new UnsupportedServerVersionException('ignored', 'ignored') }
+      restClientFactory.forConfiguration(restClientConfiguration) >>
+          Mock(Base) { validateServerVersion('1.141.0') >>
+              { throw new UnsupportedServerVersionException('ignored', 'ignored') } }
       telemetrySupplier.enableIfSupported()
 
     when: 'telemetry is generated'
