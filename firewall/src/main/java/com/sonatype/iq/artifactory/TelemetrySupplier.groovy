@@ -74,7 +74,7 @@ class TelemetrySupplier
     }
   }
 
-  void enable() {
+  void enableIfSupported() {
     telemetryIsEnabled = telemetryServerVersionCheck()
   }
 }

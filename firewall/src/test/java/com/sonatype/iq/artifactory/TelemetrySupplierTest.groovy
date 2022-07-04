@@ -41,7 +41,7 @@ class TelemetrySupplierTest
   def "telemetry disabled when version does not match"() {
     given: 'version check results in exception being thrown'
       restClientFactory.forConfiguration(restClientConfiguration) >> { throw new UnsupportedServerVersionException('ignored', 'ignored') }
-      telemetrySupplier.enable()
+      telemetrySupplier.enableIfSupported()
 
     when: 'telemetry is generated'
       def actual = telemetrySupplier.getUserAgent()
@@ -53,7 +53,7 @@ class TelemetrySupplierTest
   def "telemetry is generated"() {
     given: 'version check does not fail'
       restClientFactory.forConfiguration(restClientConfiguration) >> Mock(Base)
-      telemetrySupplier.enable()
+      telemetrySupplier.enableIfSupported()
 
     when: 'telemetry is generated'
       def actual = telemetrySupplier.getUserAgent()

@@ -151,7 +151,7 @@ class IqConnectionManager
 
           migrationServerVersionCheck()
 
-          telemetrySupplier.enable()
+          telemetrySupplier.enableIfSupported()
         }
         catch (IOException e) {
           lastFailedConnectionAttempt = Instant.now()
