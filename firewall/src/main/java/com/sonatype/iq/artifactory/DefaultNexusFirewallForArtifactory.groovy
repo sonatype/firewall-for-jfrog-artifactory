@@ -191,6 +191,17 @@ class DefaultNexusFirewallForArtifactory
     return iqConnectionManager.getPolicyEvaluationSummary(repositoryName)
   }
 
+  String getQuarantinedComponentReportUrl(RepoPath repoPath) {
+    try {
+      return iqConnectionManager.getQuarantinedComponentReportUrl(repoPath.repoKey, repoPath.path);
+    }
+    catch (IOException e) {
+      log.warn("Unable to retrieve the link to IQ Quarantined Component View for asset {}:{}", repository.getName(), asset.path(), e);
+    }
+
+    return null;
+  }
+
   void beforeDownloadHandler(final RepoPath repoPath) {
     if (initializationVerified.getCount() != 0) {
       throw new CancelException('Invoked beforeDownloadHandler before initialisation.', 500)
@@ -198,7 +209,11 @@ class DefaultNexusFirewallForArtifactory
 
     QuarantineStatus quarantineStatus = handleDownload(repoPath)
     if (ALLOW != quarantineStatus) {
-      throw new CancelException(format("Download of '%s' cancelled due to quarantine", repoPath),
+      FirewallRepository firewallRepository = firewallRepositories.getEnabledFirewallRepoByKey(repoPath.repoKey)
+      String quarantinedComponentReportUrl =
+          iqConnectionManager.getQuarantinedComponentReportUrl(firewallRepository.repoKey, repoPath.path)
+      throw new CancelException("-------------------->>> REQUESTED ITEM IS QUARANTINED -------------------->>> " +
+          "FOR DETAILS SEE ------>>> ${quarantinedComponentReportUrl} <<<------",
           HttpStatus.SC_FORBIDDEN)
     }
   }

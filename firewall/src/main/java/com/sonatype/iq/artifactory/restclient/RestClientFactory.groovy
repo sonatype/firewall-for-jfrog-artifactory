@@ -17,6 +17,7 @@ import com.sonatype.clm.dto.model.component.RepositoryComponentEvaluationDataLis
 import com.sonatype.clm.dto.model.component.RepositoryComponentEvaluationDataRequestList
 import com.sonatype.clm.dto.model.component.UnquarantinedComponentList
 import com.sonatype.clm.dto.model.policy.RepositoryPolicyEvaluationSummary
+import com.sonatype.clm.dto.model.repository.QuarantinedComponentReport
 import com.sonatype.insight.brain.client.ConfigurationClient
 import com.sonatype.insight.brain.client.FirewallClient
 import com.sonatype.insight.client.utils.HttpClientUtils.Configuration
@@ -146,6 +147,11 @@ class RestClientFactory
     @Override
     RepositoryPolicyEvaluationSummary getPolicyEvaluationSummary() throws IOException {
       firewallClientFactory().getPolicyEvaluationSummary()
+    }
+
+    @Override
+    QuarantinedComponentReport getQuarantinedComponentReportUrl(String pathname) throws IOException {
+      firewallClientFactory().getQuarantinedComponentReport(pathname)
     }
 
     @Override

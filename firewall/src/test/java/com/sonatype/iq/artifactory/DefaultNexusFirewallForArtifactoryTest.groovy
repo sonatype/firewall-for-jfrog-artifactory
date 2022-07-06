@@ -16,6 +16,7 @@ import com.sonatype.clm.dto.model.component.FirewallIgnorePatterns
 import com.sonatype.iq.artifactory.Commons.QuarantineStatus
 
 import groovy.util.logging.Slf4j
+import org.apache.http.HttpStatus
 import org.artifactory.exception.CancelException
 import org.artifactory.fs.ItemInfo
 import org.artifactory.repo.RepoPath
@@ -273,7 +274,29 @@ class DefaultNexusFirewallForArtifactoryTest
 
     then:
       CancelException cancelException = thrown()
-      cancelException.message.contains('cancelled due to quarantine')
+      cancelException.status == HttpStatus.SC_FORBIDDEN
+      cancelException.message.contains('REQUESTED ITEM IS QUARANTINED')
+  }
+
+  def 'test quarantined component message contains Quarantine Component View URL'() {
+    given:
+      RepoPath repoPath = TestHelper.createStruts2RepoPath('main-java-libs', 'jar')
+      firewallRepository.getRepoKey() >> repoPath.repoKey
+      pathFactory.createRepoPath(repoPath.repoKey, repoPath.path) >> repoPath
+      iqConnectionManager.evaluateWithQuarantine(_) >> TestHelper.createRepositoryComponentEvaluationDataList(true)
+      iqConnectionManager.getQuarantinedComponentReportUrl('main-java-libs',
+          'org/apache/struts/struts2-core/2.5.17/struts2-core-2.5.17.jar') >> 'testQuarantineComponentViewUrl'
+      nexusFirewallForArtifactory.initializationVerified.countDown() //assume init thread started
+      nexusFirewallForArtifactory.initializationVerified.countDown() //assume init thread completed
+
+    when:
+      nexusFirewallForArtifactory.beforeDownloadHandler(repoPath)
+
+    then:
+      CancelException cancelException = thrown()
+      cancelException.status == HttpStatus.SC_FORBIDDEN
+      cancelException.message.contains('-------------------->>> REQUESTED ITEM IS QUARANTINED -------------------->>>' +
+          ' FOR DETAILS SEE ------>>> testQuarantineComponentViewUrl <<<------')
   }
 
   def 'test checkQuarantineStatus returns DENY when asset is quarantined'() {
