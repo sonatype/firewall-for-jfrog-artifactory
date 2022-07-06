@@ -65,11 +65,11 @@ class TelemetrySupplier
     try {
       restClientFactory.forConfiguration(restClientConfiguration).validateServerVersion(
           REQUIRED_IQ_VERSION_FOR_TELEMETRY)
-      log.debug("Enabling telemetry.")
+      log.trace("Enabling telemetry.")
       return true
     }
     catch (UnsupportedServerVersionException e) {
-      log.warn("Disabling telemetry. Requires IQ version {} or newer.", REQUIRED_IQ_VERSION_FOR_TELEMETRY)
+      log.trace("Disabling telemetry. Requires IQ version {} or newer.", REQUIRED_IQ_VERSION_FOR_TELEMETRY)
       return false
     }
   }
