@@ -42,7 +42,7 @@ class TelemetrySupplierTest
   def "telemetry disabled when version does not match"() {
     given: 'version check results in exception being thrown'
       restClientFactory.forConfiguration(restClientConfiguration) >>
-          Mock(Base) { validateServerVersion('1.141.0') >>
+          Mock(Base) { validateServerVersion(_) >>
               { throw new UnsupportedServerVersionException('ignored', 'ignored') } }
 
     and: 'telemetry enabled'
