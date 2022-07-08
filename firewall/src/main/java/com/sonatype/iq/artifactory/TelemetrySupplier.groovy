@@ -20,7 +20,7 @@ import org.slf4j.Logger
 
 class TelemetrySupplier
 {
-  private static final String REQUIRED_IQ_VERSION_FOR_TELEMETRY = '1.141.0'
+  private static final String REQUIRED_IQ_VERSION_FOR_TELEMETRY = '1.141.0-01'
 
   private final RestClientFactory restClientFactory
 
