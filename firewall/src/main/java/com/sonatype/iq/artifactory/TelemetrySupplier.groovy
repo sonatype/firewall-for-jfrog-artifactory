@@ -54,7 +54,7 @@ class TelemetrySupplier
         "${System.getProperty('os.name')}; " +
         "${System.getProperty('os.version')}; " +
         "${System.getProperty('os.arch')}; " +
-        "${System.getProperty("java.version")}; ${artifactoryVersion})"
+        "${System.getProperty("java.version")}; Jfrog Artifactory ${artifactoryVersion})"
         : "Firewall_For_Jfrog_Artifactory/${pluginVersion}"
   }
 
