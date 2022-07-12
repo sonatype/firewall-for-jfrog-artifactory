@@ -55,6 +55,7 @@
     <spock.version>1.3-groovy-2.4</spock.version>
     <cglib.version>3.2.10</cglib.version>
 
+    <gpg.plugin.version>3.0.1</gpg.plugin.version>
     <staging.autoReleaseAfterClose>true</staging.autoReleaseAfterClose>
 
     <clm.skip>false</clm.skip>
@@ -181,6 +182,10 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>${gpg.plugin.version}</version>
       </plugin>
     </plugins>
   </build>
