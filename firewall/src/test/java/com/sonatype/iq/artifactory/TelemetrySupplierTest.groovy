@@ -68,6 +68,6 @@ class TelemetrySupplierTest
           "${System.getProperty('os.name')}; " +
           "${System.getProperty('os.version')}; " +
           "${System.getProperty('os.arch')}; " +
-          "${System.getProperty("java.version")}; arti-1.0)"
+          "${System.getProperty("java.version")}; Jfrog Artifactory arti-1.0)"
   }
 }
