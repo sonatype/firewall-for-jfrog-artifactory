@@ -17,6 +17,7 @@ import com.sonatype.clm.dto.model.component.RepositoryComponentEvaluationDataLis
 import com.sonatype.clm.dto.model.component.RepositoryComponentEvaluationDataRequestList
 import com.sonatype.clm.dto.model.component.UnquarantinedComponentList
 import com.sonatype.clm.dto.model.policy.RepositoryPolicyEvaluationSummary
+import com.sonatype.clm.dto.model.repository.QuarantinedComponentReport
 
 interface RestClient
 {
@@ -48,6 +49,8 @@ interface RestClient
         final RepositoryComponentEvaluationDataRequestList repositoryComponentEvaluationDataRequest) throws IOException;
 
     RepositoryPolicyEvaluationSummary getPolicyEvaluationSummary() throws IOException;
+
+    QuarantinedComponentReport getQuarantinedComponentReportUrl(String pathname) throws IOException;
 
     UnquarantinedComponentList getUnquarantinedComponents(long sinceUtcTimestamp) throws IOException;
   }

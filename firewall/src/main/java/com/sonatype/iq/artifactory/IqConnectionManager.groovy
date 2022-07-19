@@ -21,6 +21,7 @@ import com.sonatype.clm.dto.model.component.RepositoryComponentEvaluationDataReq
 import com.sonatype.clm.dto.model.component.RepositoryComponentEvaluationDataRequestList.RepositoryComponentEvaluationDataRequest
 import com.sonatype.clm.dto.model.component.UnquarantinedComponentList
 import com.sonatype.clm.dto.model.policy.RepositoryPolicyEvaluationSummary
+import com.sonatype.clm.dto.model.repository.QuarantinedComponentReport
 import com.sonatype.iq.artifactory.httpclient.PreemptiveAuthHttpRequestInterceptor
 import com.sonatype.iq.artifactory.restclient.HttpException
 import com.sonatype.iq.artifactory.restclient.RestClient
@@ -324,6 +325,11 @@ class IqConnectionManager
    */
   RepositoryPolicyEvaluationSummary getPolicyEvaluationSummary(final String repositoryName) {
     return maybeEnhanceReportUrlWithIqPublicUrl(getRepositoryClient(repositoryName).getPolicyEvaluationSummary())
+  }
+
+  String getQuarantinedComponentReportUrl(String repositoryName, String pathname) {
+    QuarantinedComponentReport quarantinedComponentReport = getRepositoryClient(repositoryName).getQuarantinedComponentReportUrl(pathname)
+    return quarantinedComponentReport.resolveReportUrl(iqPublicUrl)
   }
 
   def maybeEnhanceReportUrlWithIqPublicUrl(RepositoryPolicyEvaluationSummary summary) {
